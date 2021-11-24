@@ -1,10 +1,17 @@
 package org.pricetrackerbatchapp;
 
+import freemarker.template.Configuration;
+import freemarker.template.Template;
+import freemarker.template.TemplateException;
 import jakarta.mail.*;
 import jakarta.mail.internet.InternetAddress;
 import jakarta.mail.internet.MimeMessage;
 
+import java.io.IOException;
+import java.io.StringWriter;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Properties;
 
 public class MailSender {
@@ -40,21 +47,25 @@ public class MailSender {
     }
 
     public static String createHtmlMessage(List<Product> products) {
-        if(products == null || products.isEmpty()) {
-            return null;
+        Configuration cfg = new Configuration();
+        cfg.setClassForTemplateLoading(App.class, "/");
+        cfg.setDefaultEncoding("UTF-8");
+
+        try {
+            Template template = cfg.getTemplate("email_template.ftl");
+
+            Map<String, Object> templateData = new HashMap<>();
+            templateData.put("products", products);
+
+            StringWriter out = new StringWriter();
+            template.process(templateData, out);
+            String htmlMessage = out.getBuffer().toString();
+            out.flush();
+            return htmlMessage;
+        } catch (IOException | TemplateException e) {
+            e.printStackTrace();
         }
 
-        StringBuilder messageBuilder = new StringBuilder();
-        messageBuilder.append("<html><body>");
-        for(Product product : products) {
-            messageBuilder.append("<h2>")
-                    .append(product.getName())
-                    .append(" : ")
-                    .append(product.getPrice())
-                    .append("</h2>")
-                    .append("<br>");
-        }
-        messageBuilder.append("</body></html>");
-        return messageBuilder.toString();
+        return null;
     }
 }

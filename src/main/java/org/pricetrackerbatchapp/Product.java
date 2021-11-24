@@ -9,6 +9,7 @@ public class Product {
     private String name;
     private String price;
     private String url;
+    private String image;
 
     public Product() {}
 
@@ -17,11 +18,12 @@ public class Product {
         this.url = url;
     }
 
-    public Product(String id, String name, String price, String url) {
+    public Product(String id, String name, String price, String url, String image) {
         this.id = id;
         this.name = name;
         this.price = price;
         this.url = url;
+        this.image = image;
     }
 
     public String getId() {
@@ -54,6 +56,14 @@ public class Product {
 
     public void setUrl(String url) {
         this.url = url;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
     }
 
     @Override

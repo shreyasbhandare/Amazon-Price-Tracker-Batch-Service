@@ -14,14 +14,14 @@ public class JsoupScraper {
 
     public static Product scrapeProductFromUrl(String productId, String url) {
         try {
+            Product product = new Product(productId, url);
+
             Document doc = Jsoup.connect(url)
                     .userAgent("Chrome")
                     .timeout(5000)
                     .get();
 
             Element productTitleElement = doc.getElementById("productTitle");
-
-            Product product = new Product(productId, url);
 
             if(productTitleElement != null) {
                 product.setName(productTitleElement.text().trim());
@@ -36,6 +36,11 @@ public class JsoupScraper {
 
             if(priceInnerElement != null && !priceInnerElement.isEmpty() && priceInnerElement.get(0) != null) {
                 product.setPrice(priceInnerElement.text().trim());
+            }
+
+            Element imageElement = doc.getElementById("landingImage");
+            if(imageElement != null) {
+                product.setImage(imageElement.attr("src"));
             }
 
             return product;

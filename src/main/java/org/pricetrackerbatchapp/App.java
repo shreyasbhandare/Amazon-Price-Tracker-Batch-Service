@@ -26,7 +26,7 @@ public class App {
                 for(String productUrl : productUrls) {
                     String productId = JsoupScraper.getProductIdFromUrl(productUrl);
 
-                    if(productId == null) {
+                    if(StringUtils.isEmpty(productId)) {
                         continue;
                     }
 
