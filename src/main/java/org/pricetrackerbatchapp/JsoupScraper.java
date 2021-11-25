@@ -1,5 +1,6 @@
 package org.pricetrackerbatchapp;
 
+import org.apache.commons.lang3.StringUtils;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -24,7 +25,11 @@ public class JsoupScraper {
             Element productTitleElement = doc.getElementById("productTitle");
 
             if(productTitleElement != null) {
-                product.setName(productTitleElement.text().trim());
+                product.setName(StringUtils.substring(productTitleElement.text().trim(), 0, 50));
+
+                if(product.getName().length() == 50) {
+                    product.setName(product.getName() + "...");
+                }
             }
 
             Element priceOuterElement = doc.getElementById("apex_offerDisplay_desktop");

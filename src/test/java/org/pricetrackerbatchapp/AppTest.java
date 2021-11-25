@@ -29,8 +29,7 @@ public class AppTest
 
     @Test
     public void scrapeTest() {
-        Product testProduct = new Product("B087Z5WDJ2", "Logitech M510 Wireless Computer Mouse for PC with USB Unifying Receiver - Graphite", "$19.99", "https://www.amazon.com/Logitech-Wireless-Computer-Unifying-Receiver/dp/B087Z5WDJ2/ref=sxin_14_ac_d_mf_br?ac_md=1-0-TG9naXRlY2g%3D-ac_d_mf_br_br&cv_ct_cx=wireless%2Bmouse&keywords=wireless%2Bmouse&pd_rd_i=B087Z5WDJ2&pd_rd_r=2e79feb4-3dac-4c59-a80d-85b3d176bef5&pd_rd_w=R2SbG&pd_rd_wg=Kn7Z9&pf_rd_p=b0c493d8-5fdd-4188-b852-c552a4a3abdb&pf_rd_r=E17DYAW3SW9BSFZ2PKBR&qid=1636988574&sr=1-1-ed8a42d3-65f1-4884-a3a2-0dd6e83b6876&th=1", "");
-        assertEquals(testProduct, JsoupScraper.scrapeProductFromUrl("B087Z5WDJ2","https://www.amazon.com/Logitech-Wireless-Computer-Unifying-Receiver/dp/B087Z5WDJ2/ref=sxin_14_ac_d_mf_br?ac_md=1-0-TG9naXRlY2g%3D-ac_d_mf_br_br&cv_ct_cx=wireless%2Bmouse&keywords=wireless%2Bmouse&pd_rd_i=B087Z5WDJ2&pd_rd_r=2e79feb4-3dac-4c59-a80d-85b3d176bef5&pd_rd_w=R2SbG&pd_rd_wg=Kn7Z9&pf_rd_p=b0c493d8-5fdd-4188-b852-c552a4a3abdb&pf_rd_r=E17DYAW3SW9BSFZ2PKBR&qid=1636988574&sr=1-1-ed8a42d3-65f1-4884-a3a2-0dd6e83b6876&th=1"));
+        JsoupScraper.scrapeProductFromUrl("B08GKP7YXL","https://www.amazon.com/Segway-ES1L-Electric-Lightweight-Inner-Support/dp/B08GKP7YXL/?_encoding=UTF8&pf_rd_p=41cfeace-dd87-4c72-a118-1f7af4c58577&pd_rd_wg=i8agC&pf_rd_r=28JBHAR8MKHHEEA6WJTJ&pd_rd_w=KPqdH&pd_rd_r=28a408c0-33d3-4bc4-b126-97bd16f046b5&ref_=pd_gw_unk");
     }
 
     @Test
