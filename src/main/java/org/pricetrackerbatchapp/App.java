@@ -45,7 +45,7 @@ public class App {
                 }
 
                 // send email
-                String htmlMessage = MailSender.createHtmlMessage(productList);
+                String htmlMessage = MailSender.createHtmlMessage(email, productList);
 
                 if(!StringUtils.isEmpty(email) && !StringUtils.isEmpty(htmlMessage)) {
                     try {

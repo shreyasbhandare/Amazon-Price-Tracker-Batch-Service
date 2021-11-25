@@ -46,7 +46,7 @@ public class MailSender {
         Transport.send(msg);
     }
 
-    public static String createHtmlMessage(List<Product> products) {
+    public static String createHtmlMessage(String email, List<Product> products) {
         Configuration cfg = new Configuration();
         cfg.setClassForTemplateLoading(App.class, "/");
         cfg.setDefaultEncoding("UTF-8");
@@ -56,6 +56,7 @@ public class MailSender {
 
             Map<String, Object> templateData = new HashMap<>();
             templateData.put("products", products);
+            templateData.put("email", email);
 
             StringWriter out = new StringWriter();
             template.process(templateData, out);

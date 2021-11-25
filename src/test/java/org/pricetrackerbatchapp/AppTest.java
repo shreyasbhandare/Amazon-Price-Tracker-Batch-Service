@@ -1,14 +1,11 @@
 package org.pricetrackerbatchapp;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 
+import jakarta.mail.MessagingException;
 import org.junit.Test;
 
-import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 
 /**
  * Unit test for simple App.
@@ -44,8 +41,20 @@ public class AppTest
 
     @Test
     public void testFreeMakerTemplate() {
-        String html = MailSender.createHtmlMessage(Arrays.asList(new Product("B0031LKYMY","Logitech M510 Wireless Computer Mouse for PC with USB Unifying Receiver - Graphite","$222.70","https://www.amazon.com/Rocker-51396-Pedestal-Gaming-Wireless/dp/B0031LKYMY/?_encoding=UTF8&pf_rd_p=98b093b7-a806-403d-aa39-6ad3a4fa6d14&pd_rd_wg=e0m3j&pf_rd_r=FEQHB2XCZTS5XYQRGDTY&pd_rd_w=QFPUb&pd_rd_r=0c0bcbb5-5a54-4386-9fa8-d83e617750b0&ref_=pd_gw_unk","https://m.media-amazon.com/images/I/81P+F5lBRNL._AC_SX425_.jpg"),
+        String html = MailSender.createHtmlMessage("bhandare.shreyas@gmail.com", Arrays.asList(new Product("B0031LKYMY","Logitech M510 Wireless Computer Mouse for PC","$222.70","https://www.amazon.com/Rocker-51396-Pedestal-Gaming-Wireless/dp/B0031LKYMY/?_encoding=UTF8&pf_rd_p=98b093b7-a806-403d-aa39-6ad3a4fa6d14&pd_rd_wg=e0m3j&pf_rd_r=FEQHB2XCZTS5XYQRGDTY&pd_rd_w=QFPUb&pd_rd_r=0c0bcbb5-5a54-4386-9fa8-d83e617750b0&ref_=pd_gw_unk","https://m.media-amazon.com/images/I/81P+F5lBRNL._AC_SX425_.jpg"),
                 new Product("B08GKP7YXL", "Segway Ninebot ES1L Electric Kick Scooter", "$299.99", "https://www.amazon.com/Segway-ES1L-Electric-Lightweight-Inner-Support/dp/B08GKP7YXL/?_encoding=UTF8&pf_rd_p=41cfeace-dd87-4c72-a118-1f7af4c58577&pd_rd_wg=i8agC&pf_rd_r=28JBHAR8MKHHEEA6WJTJ&pd_rd_w=KPqdH&pd_rd_r=28a408c0-33d3-4bc4-b126-97bd16f046b5&ref_=pd_gw_unk", "https://m.media-amazon.com/images/I/61EoRZby6RL._AC_SX425_.jpg")));
         System.out.println(html);
+    }
+
+    @Test
+    public void sendEmailTest() {
+        String html = MailSender.createHtmlMessage("bhandare.shreyas@gmail.com", Arrays.asList(new Product("B0031LKYMY","Logitech M510 Wireless Computer Mouse for PC","$222.70","https://www.amazon.com/Rocker-51396-Pedestal-Gaming-Wireless/dp/B0031LKYMY/?_encoding=UTF8&pf_rd_p=98b093b7-a806-403d-aa39-6ad3a4fa6d14&pd_rd_wg=e0m3j&pf_rd_r=FEQHB2XCZTS5XYQRGDTY&pd_rd_w=QFPUb&pd_rd_r=0c0bcbb5-5a54-4386-9fa8-d83e617750b0&ref_=pd_gw_unk","https://m.media-amazon.com/images/I/81P+F5lBRNL._AC_SX425_.jpg"),
+                new Product("B08GKP7YXL", "Segway Ninebot ES1L Electric Kick Scooter", "$299.99", "https://www.amazon.com/Segway-ES1L-Electric-Lightweight-Inner-Support/dp/B08GKP7YXL/?_encoding=UTF8&pf_rd_p=41cfeace-dd87-4c72-a118-1f7af4c58577&pd_rd_wg=i8agC&pf_rd_r=28JBHAR8MKHHEEA6WJTJ&pd_rd_w=KPqdH&pd_rd_r=28a408c0-33d3-4bc4-b126-97bd16f046b5&ref_=pd_gw_unk", "https://m.media-amazon.com/images/I/61EoRZby6RL._AC_SX425_.jpg")));
+
+        try {
+            MailSender.sendEmail("bhandare.shreyas@gmail.com", html);
+        } catch (MessagingException e) {
+            e.printStackTrace();
+        }
     }
 }

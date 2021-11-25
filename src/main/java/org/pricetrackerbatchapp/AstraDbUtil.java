@@ -33,6 +33,8 @@ public class AstraDbUtil {
                     productList.add(value.getString());
                 }
 
+                System.out.println(email + " - " + productList);
+
                 if(!StringUtils.isEmpty(email) && !productList.isEmpty()) {
                     userProductsMap.put(email, productList);
                 }
