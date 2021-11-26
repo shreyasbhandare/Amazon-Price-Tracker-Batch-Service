@@ -19,6 +19,7 @@ public class JsoupScraper {
 
             Document doc = Jsoup.connect(productUrl)
                     .userAgent("Chrome")
+                    .header("Content-Language", "en-US")
                     .timeout(5000)
                     .get();
 
