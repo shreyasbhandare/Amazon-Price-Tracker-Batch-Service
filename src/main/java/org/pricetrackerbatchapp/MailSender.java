@@ -16,8 +16,8 @@ import java.util.Properties;
 
 public class MailSender {
     public static void sendEmail(String toEmail, String message) throws MessagingException {
-        String userName = System.getenv("EMAIL_USERNAME"); // PropsConfig.getAppProps().getProperty("EMAIL_USERNAME");
-        String password = System.getenv("EMAIL_PASSWORD"); // PropsConfig.getAppProps().getProperty("EMAIL_PASSWORD");
+        String userName = System.getenv("EMAIL_USERNAME") != null ? System.getenv("EMAIL_USERNAME") : PropsConfig.getAppProps().getProperty("EMAIL_USERNAME");
+        String password = System.getenv("EMAIL_PASSWORD") != null ? System.getenv("EMAIL_PASSWORD") : PropsConfig.getAppProps().getProperty("EMAIL_PASSWORD");
 
         // sets SMTP server properties
         Properties properties = new Properties();
@@ -47,6 +47,10 @@ public class MailSender {
     }
 
     public static String createHtmlMessage(String email, List<Product> products) {
+        if(products == null || products.isEmpty()) {
+            return null;
+        }
+
         Configuration cfg = new Configuration();
         cfg.setClassForTemplateLoading(App.class, "/");
         cfg.setDefaultEncoding("UTF-8");

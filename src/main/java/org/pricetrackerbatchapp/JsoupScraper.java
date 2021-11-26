@@ -13,39 +13,22 @@ import java.util.regex.Pattern;
 public class JsoupScraper {
     private static final String ASIN_REGEX = "https?:\\/\\/(www\\.)?(.*)amazon\\.([a-z\\.]{2,5})(\\/d\\/(.*)|\\/(.*)\\/?(?:dp|o|gp|-)\\/)(aw\\/d\\/|product\\/)?(B[0-9]{2}[0-9A-Z]{7}|[0-9]{9}(?:X|[0-9]))";
 
-    public static Product scrapeProductFromUrl(String productId, String url) {
+    public static Product scrapeProductFromUrl(String productId, String productUrl) {
         try {
-            Product product = new Product(productId, url);
+            Product product = null;
 
-            Document doc = Jsoup.connect(url)
+            Document doc = Jsoup.connect(productUrl)
                     .userAgent("Chrome")
                     .timeout(5000)
                     .get();
 
-            Element productTitleElement = doc.getElementById("productTitle");
+            String name = getProductNameFromDoc(doc);
+            String imageUrl = getProductImageFromDoc(doc);
+            String price = getProductPriceFromDoc(doc);
 
-            if(productTitleElement != null) {
-                product.setName(StringUtils.substring(productTitleElement.text().trim(), 0, 50));
-
-                if(product.getName().length() == 50) {
-                    product.setName(product.getName() + "...");
-                }
-            }
-
-            Element priceOuterElement = doc.getElementById("apex_offerDisplay_desktop");
-            Elements priceInnerElement = null;
-
-            if(priceOuterElement != null) {
-                priceInnerElement = priceOuterElement.getElementsByClass("a-offscreen");
-            }
-
-            if(priceInnerElement != null && !priceInnerElement.isEmpty() && priceInnerElement.get(0) != null) {
-                product.setPrice(priceInnerElement.text().trim());
-            }
-
-            Element imageElement = doc.getElementById("landingImage");
-            if(imageElement != null) {
-                product.setImage(imageElement.attr("src"));
+            if(!StringUtils.isEmpty(productId) && !StringUtils.isEmpty(productUrl)
+                    && !StringUtils.isEmpty(name) && !StringUtils.isEmpty(imageUrl) && !StringUtils.isEmpty(price)) {
+                product = new Product(productId, name, price, productUrl, imageUrl);
             }
 
             return product;
@@ -64,5 +47,50 @@ public class JsoupScraper {
         }
 
         return null;
+    }
+
+    private static String getProductNameFromDoc(Document doc) {
+        Element productTitleElement = doc.getElementById("productTitle");
+        String name = null;
+
+        if(productTitleElement != null) {
+            name = StringUtils.substring(productTitleElement.text().trim(), 0, 50);
+
+            if(name.length() == 50) {
+                name += "...";
+            }
+        }
+        return name;
+    }
+
+    private static String getProductImageFromDoc(Document doc) {
+        Element imageElement = doc.getElementById("landingImage");
+        String price = null;
+
+        if(imageElement != null) {
+            price = imageElement.attr("src");
+        }
+        return price;
+    }
+
+    private static String getProductPriceFromDoc(Document doc) {
+        StringBuilder priceSb = new StringBuilder();
+        Element priceOuterElement = doc.getElementById("apex_offerDisplay_desktop");
+
+        if(priceOuterElement == null) {
+            priceOuterElement = doc.getElementById("corePrice_desktop");
+        }
+
+        if(priceOuterElement != null) {
+            Elements priceInnerElements = priceOuterElement.getElementsByClass("a-offscreen");
+            if(!priceInnerElements.isEmpty() && priceInnerElements.get(0) != null) {
+                priceSb.append(priceInnerElements.get(0).text().trim());
+                for(int i = 1; i < priceInnerElements.size(); ++i) {
+                    priceSb.append(" - ").append(priceInnerElements.get(i).text().trim());
+                }
+            }
+        }
+
+        return priceSb.toString();
     }
 }

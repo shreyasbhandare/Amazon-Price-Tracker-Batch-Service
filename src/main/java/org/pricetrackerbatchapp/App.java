@@ -9,13 +9,12 @@ import java.util.List;
 import java.util.Map;
 
 public class App {
-    public static void main( String[] args ) {
+    public static void main( String[] args ) throws InterruptedException {
         doBatch();
     }
 
-    private static void doBatch() {
+    public static void doBatch() throws InterruptedException {
         Map<String, List<String>> userProductsMap = AstraDbUtil.getUserProductsMapFromDB();
-
         Map<String, Product> productPricesMap = new HashMap<>();
 
         if(!userProductsMap.isEmpty()) {
@@ -54,6 +53,8 @@ public class App {
                         e.printStackTrace();
                     }
                 }
+
+                Thread.sleep(3000);
             }
         }
     }

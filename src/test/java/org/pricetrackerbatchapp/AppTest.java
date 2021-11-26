@@ -10,8 +10,13 @@ import java.util.Arrays;
 /**
  * Unit test for simple App.
  */
-public class AppTest 
-{
+public class AppTest {
+
+    @Test
+    public void doBatchTest() throws InterruptedException {
+        App.doBatch();
+    }
+
     @Test
     public void productIdExtractionTest1() {
         assertEquals("B00QXT5T3U",
@@ -26,7 +31,7 @@ public class AppTest
 
     @Test
     public void scrapeTest() {
-        JsoupScraper.scrapeProductFromUrl("B08GKP7YXL","https://www.amazon.com/Segway-ES1L-Electric-Lightweight-Inner-Support/dp/B08GKP7YXL/?_encoding=UTF8&pf_rd_p=41cfeace-dd87-4c72-a118-1f7af4c58577&pd_rd_wg=i8agC&pf_rd_r=28JBHAR8MKHHEEA6WJTJ&pd_rd_w=KPqdH&pd_rd_r=28a408c0-33d3-4bc4-b126-97bd16f046b5&ref_=pd_gw_unk");
+        JsoupScraper.scrapeProductFromUrl("B07XLTPC5L","https://www.amazon.com/Gildan-T-Shirt-Multipack-Charcoal-X-Large/dp/B07XLTPC5L/ref=sr_1_4?keywords=t-shirt&qid=1637367374&sr=8-4");
     }
 
     @Test
