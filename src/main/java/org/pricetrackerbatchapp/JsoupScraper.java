@@ -17,15 +17,19 @@ public class JsoupScraper {
         try {
             Product product = null;
 
+            /*
             Document doc = Jsoup.connect(productUrl)
                     .header("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:66.0) Gecko/20100101 Firefox/66.0")
                     .header("Accept-Encoding", "gzip, deflate")
-                    .header("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8")
+                    .header("Accept", "text/html,application/xhtml+xml,application/xml)
+                    .header("q", 0.8)
                     .header("DNT", "1")
                     .header("Connection", "close")
                     .header("Upgrade-Insecure-Requests", "1")
                     .timeout(5000)
-                    .get();
+                    .get();*/
+
+            Document doc = Jsoup.connect(productUrl).get();
 
             String name = getProductNameFromDoc(doc);
             String imageUrl = getProductImageFromDoc(doc);
