@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Map;
 
 public class App {
-    public static void main( String[] args ) throws InterruptedException {
+    public static void main(String[] args) throws InterruptedException {
         doBatch();
     }
 
@@ -23,7 +23,7 @@ public class App {
                 List<Product> productList = new ArrayList<>();
 
                 for(String productUrl : productUrls) {
-                    String productId = JsoupScraper.getProductIdFromUrl(productUrl);
+                    String productId = ProductUtil.getProductIdFromUrl(productUrl);
 
                     if(StringUtils.isEmpty(productId)) {
                         continue;
@@ -35,12 +35,15 @@ public class App {
                     }
 
                     // scrape product
-                    Product product = JsoupScraper.scrapeProductFromUrl(productId, productUrl);
+                    Product product = ProductUtil.fetchProductFromUrl(productId, productUrl);
 
                     if(product != null) {
                         productPricesMap.put(productId, product);
                         productList.add(product);
                     }
+
+                    // 1.5 sec gap between fetching products.
+                    Thread.sleep(1500);
                 }
 
                 // send email
@@ -53,8 +56,6 @@ public class App {
                         e.printStackTrace();
                     }
                 }
-
-                Thread.sleep(3000);
             }
         }
     }

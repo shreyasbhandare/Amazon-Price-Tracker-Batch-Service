@@ -16,8 +16,8 @@ import java.util.Properties;
 
 public class MailSender {
     public static void sendEmail(String toEmail, String message) throws MessagingException {
-        String userName = System.getenv("EMAIL_USERNAME") != null ? System.getenv("EMAIL_USERNAME") : PropsConfig.getAppProps().getProperty("EMAIL_USERNAME");
-        String password = System.getenv("EMAIL_PASSWORD") != null ? System.getenv("EMAIL_PASSWORD") : PropsConfig.getAppProps().getProperty("EMAIL_PASSWORD");
+        final String userName = System.getenv("EMAIL_USERNAME") != null ? System.getenv("EMAIL_USERNAME") : PropsConfig.getAppProps().getProperty("EMAIL_USERNAME");
+        final String password = System.getenv("EMAIL_PASSWORD") != null ? System.getenv("EMAIL_PASSWORD") : PropsConfig.getAppProps().getProperty("EMAIL_PASSWORD");
 
         // sets SMTP server properties
         Properties properties = new Properties();

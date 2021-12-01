@@ -7,11 +7,11 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import java.io.IOException;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
+/*
+* JsoupScraper was designed to scrape Amazon Product Page. Currently not in use since Axesso API serves need without manual scraping
+* */
 public class JsoupScraper {
-    private static final String ASIN_REGEX = "https?:\\/\\/(www\\.)?(.*)amazon\\.([a-z\\.]{2,5})(\\/d\\/(.*)|\\/(.*)\\/?(?:dp|o|gp|-)\\/)(aw\\/d\\/|product\\/)?(B[0-9]{2}[0-9A-Z]{7}|[0-9]{9}(?:X|[0-9]))";
 
     public static Product scrapeProductFromUrl(String productId, String productUrl) {
         try {
@@ -25,7 +25,7 @@ public class JsoupScraper {
             String imageUrl = getProductImageFromDoc(doc);
             String price = getProductPriceFromDoc(doc);
 
-            if(!StringUtils.isEmpty(productId) && !StringUtils.isEmpty(productUrl)
+            if (!StringUtils.isEmpty(productId) && !StringUtils.isEmpty(productUrl)
                     && !StringUtils.isEmpty(name) && !StringUtils.isEmpty(imageUrl) && !StringUtils.isEmpty(price)) {
                 product = new Product(productId, name, price, productUrl, imageUrl);
             }
@@ -35,17 +35,6 @@ public class JsoupScraper {
             e.printStackTrace();
             return null;
         }
-    }
-
-    public static String getProductIdFromUrl(String url) {
-        final Pattern pattern = Pattern.compile(ASIN_REGEX, Pattern.CASE_INSENSITIVE);
-        final Matcher matcher = pattern.matcher(url);
-
-        if (matcher.find()) {
-            return matcher.group(8);
-        }
-
-        return null;
     }
 
     private static String getProductNameFromDoc(Document doc) {

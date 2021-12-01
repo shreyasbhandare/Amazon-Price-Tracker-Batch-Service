@@ -13,9 +13,9 @@ public final class AstraDbConnector {
     public static StargateGrpc.StargateBlockingStub buildBlockingStub() {
         try {
             if (blockingStub == null) {
-                String ASTRA_DB_ID = System.getenv("ASTRA_DB_ID") != null ? System.getenv("ASTRA_DB_ID") : PropsConfig.getAppProps().getProperty("ASTRA_DB_ID");
-                String ASTRA_DB_REGION = System.getenv("ASTRA_DB_REGION") != null ? System.getenv("ASTRA_DB_REGION") : PropsConfig.getAppProps().getProperty("ASTRA_DB_REGION");
-                String ASTRA_TOKEN = System.getenv("ASTRA_TOKEN") != null ? System.getenv("ASTRA_TOKEN") : PropsConfig.getAppProps().getProperty("ASTRA_TOKEN");
+                final String ASTRA_DB_ID = System.getenv("ASTRA_DB_ID") != null ? System.getenv("ASTRA_DB_ID") : PropsConfig.getAppProps().getProperty("ASTRA_DB_ID");
+                final String ASTRA_DB_REGION = System.getenv("ASTRA_DB_REGION") != null ? System.getenv("ASTRA_DB_REGION") : PropsConfig.getAppProps().getProperty("ASTRA_DB_REGION");
+                final String ASTRA_TOKEN = System.getenv("ASTRA_TOKEN") != null ? System.getenv("ASTRA_TOKEN") : PropsConfig.getAppProps().getProperty("ASTRA_TOKEN");
 
                 ManagedChannel channel = ManagedChannelBuilder
                         .forAddress(ASTRA_DB_ID + "-" + ASTRA_DB_REGION + ".apps.astra.datastax.com", 443)
