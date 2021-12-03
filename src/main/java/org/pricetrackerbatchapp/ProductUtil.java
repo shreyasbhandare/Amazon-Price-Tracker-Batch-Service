@@ -1,11 +1,12 @@
 package org.pricetrackerbatchapp;
 
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
 import org.apache.commons.lang3.StringUtils;
 import org.json.JSONObject;
 
+import java.net.URI;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -14,23 +15,22 @@ public class ProductUtil {
 
     public static Product fetchProductFromUrl(String productId, String productUrl) {
         try {
-            OkHttpClient client = AxessoConnector.getOkHttpClient();
             Product product = null;
 
             final String X_RAPIDAPI_HOST = System.getenv("X_RAPIDAPI_HOST") != null ? System.getenv("X_RAPIDAPI_HOST") : PropsConfig.getAppProps().getProperty("X_RAPIDAPI_HOST");
             final String X_RAPIDAPI_KEY = System.getenv("X_RAPIDAPI_KEY") != null ? System.getenv("X_RAPIDAPI_KEY") : PropsConfig.getAppProps().getProperty("X_RAPIDAPI_KEY");
 
-            Request request = new Request.Builder()
-                    .url("https://axesso-axesso-amazon-data-service-v1.p.rapidapi.com/amz/amazon-lookup-product?url=" + productUrl)
-                    .get()
-                    .addHeader("x-rapidapi-host", "axesso-axesso-amazon-data-service-v1.p.rapidapi.com")
-                    .addHeader("x-rapidapi-key", "184add03c2mshbbb9c80d52de11dp18b7edjsn78fe4a502d1d")
+            HttpRequest request = HttpRequest.newBuilder()
+                    .uri(URI.create("https://axesso-axesso-amazon-data-service-v1.p.rapidapi.com/amz/amazon-lookup-product?url=" + productUrl))
+                    .header("x-rapidapi-host", X_RAPIDAPI_HOST)
+                    .header("x-rapidapi-key", X_RAPIDAPI_KEY)
+                    .method("GET", HttpRequest.BodyPublishers.noBody())
                     .build();
 
-            Response response = client.newCall(request).execute();
+            HttpResponse<String> response = HttpClient.newHttpClient().send(request, HttpResponse.BodyHandlers.ofString());
 
-            if(response.isSuccessful() && response.body() != null) {
-                JSONObject productObj = new JSONObject(response.body().string());
+            if(response.statusCode() / 100 == 2 && response.body() != null) {
+                JSONObject productObj = new JSONObject(response.body());
 
                 String name = getProductNameFromJson(productObj);
                 String imageUrl = getProductImageFromJson(productObj);
