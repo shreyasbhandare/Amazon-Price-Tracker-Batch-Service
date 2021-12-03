@@ -3,10 +3,10 @@ package org.pricetrackerbatchapp;
 import org.apache.commons.lang3.StringUtils;
 import org.json.JSONObject;
 
-import java.net.URI;
-import java.net.http.HttpClient;
-import java.net.http.HttpRequest;
-import java.net.http.HttpResponse;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -20,17 +20,22 @@ public class ProductUtil {
             final String X_RAPIDAPI_HOST = System.getenv("X_RAPIDAPI_HOST") != null ? System.getenv("X_RAPIDAPI_HOST") : PropsConfig.getAppProps().getProperty("X_RAPIDAPI_HOST");
             final String X_RAPIDAPI_KEY = System.getenv("X_RAPIDAPI_KEY") != null ? System.getenv("X_RAPIDAPI_KEY") : PropsConfig.getAppProps().getProperty("X_RAPIDAPI_KEY");
 
-            HttpRequest request = HttpRequest.newBuilder()
-                    .uri(URI.create("https://axesso-axesso-amazon-data-service-v1.p.rapidapi.com/amz/amazon-lookup-product?url=" + productUrl))
-                    .header("x-rapidapi-host", X_RAPIDAPI_HOST)
-                    .header("x-rapidapi-key", X_RAPIDAPI_KEY)
-                    .method("GET", HttpRequest.BodyPublishers.noBody())
-                    .build();
+            URL url = new URL("https://axesso-axesso-amazon-data-service-v1.p.rapidapi.com/amz/amazon-lookup-product?url=" + productUrl);//your url i.e fetch data from .
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            conn.setRequestMethod("GET");
+            conn.setRequestProperty("x-rapidapi-host", X_RAPIDAPI_HOST);
+            conn.setRequestProperty("x-rapidapi-key", X_RAPIDAPI_KEY);
+            if (conn.getResponseCode() / 100 != 2) {
+                throw new RuntimeException("Failed : HTTP Error code : "
+                        + conn.getResponseCode());
+            }
+            InputStreamReader in = new InputStreamReader(conn.getInputStream());
+            BufferedReader br = new BufferedReader(in);
+            String response = br.readLine();
+            conn.disconnect();
 
-            HttpResponse<String> response = HttpClient.newHttpClient().send(request, HttpResponse.BodyHandlers.ofString());
-
-            if(response.statusCode() / 100 == 2 && response.body() != null) {
-                JSONObject productObj = new JSONObject(response.body());
+            if(!StringUtils.isEmpty(response)) {
+                JSONObject productObj = new JSONObject(response);
 
                 String name = getProductNameFromJson(productObj);
                 String imageUrl = getProductImageFromJson(productObj);
