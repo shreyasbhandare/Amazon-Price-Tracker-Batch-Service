@@ -1,0 +1,9 @@
+org\pricetrackerbatchapp\ProductUtil.class
+org\pricetrackerbatchapp\AstraDbConnector.class
+org\pricetrackerbatchapp\MailSender$1.class
+org\pricetrackerbatchapp\PropsConfig.class
+org\pricetrackerbatchapp\App.class
+org\pricetrackerbatchapp\AstraDbUtil.class
+org\pricetrackerbatchapp\Product.class
+org\pricetrackerbatchapp\MailSender.class
+org\pricetrackerbatchapp\JsoupScraper.class
