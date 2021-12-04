@@ -87,7 +87,7 @@ public class ProductUtil {
             if(productObj.has("priceRange") && !productObj.isNull("priceRange")) {
                 priceStr = productObj.getString("priceRange");
             } else {
-                priceStr= productObj.getDouble("price") + "";
+                priceStr= "$ " + productObj.getDouble("price");
             }
         }
 
